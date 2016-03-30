@@ -1,6 +1,6 @@
 __author__ = 'ray'
+# problem url: https://community.topcoder.com/stat?c=problem_statement&pm=3942
 
-import sys
 from fractions import Fraction as ft
 
 # simplex tableau

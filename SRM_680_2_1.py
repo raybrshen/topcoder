@@ -1,4 +1,5 @@
 __author__ = 'ray'
+# problem url: https://community.topcoder.com/stat?c=problem_statement&pm=14130
 
 class BearPair(object):
   def bigDistance(self, s):

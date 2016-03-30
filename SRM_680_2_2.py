@@ -1,5 +1,5 @@
 __author__ = 'ray'
-
+# problem url: https://community.topcoder.com/stat?c=problem_statement&pm=14131
 
 import bisect
 

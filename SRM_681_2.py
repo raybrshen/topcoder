@@ -1,12 +1,15 @@
-# class CoinFlipsDiv2:
-#     def countCoins(self, state):
-#         n = len(state)
-#         if n<2: return 0
-#         ret = 0
-#         for i in xrange(n):
-#             if (i>0 and state[i]!=state[i-1]) or (i<n-1 and state[i]!=state[i+1]):
-#                 ret += 1
-#         return ret
+__author__ = 'ray'
+# problem url: https://community.topcoder.com/stat?c=problem_statement&pm=14114
+
+class CoinFlipsDiv2:
+    def countCoins(self, state):
+        n = len(state)
+        if n<2: return 0
+        ret = 0
+        for i in xrange(n):
+            if (i>0 and state[i]!=state[i-1]) or (i<n-1 and state[i]!=state[i+1]):
+                ret += 1
+        return ret
 
 # from collections import defaultdict
 # class ExplodingRobots:
