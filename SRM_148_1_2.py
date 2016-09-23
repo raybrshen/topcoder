@@ -1,7 +1,15 @@
 __author__ = 'ray'
 # problem url: https://community.topcoder.com/stat?c=problem_statement&pm=1744
 
-import sys
+# Given 9 numbers to be arranged in a magic number square.
+# A magic number square is a square of numbers that is arranged such that every row and column has the same sum.
+# Return the number of distinct ways those numbers can be arranged in a magic number squar.
+
+# solution: dfs + prunning
+# A trick here is that only the first 5 numbers need to be dfs-exhausted.
+# Because in a magic square, the expectation of the last 4 numbers can be calculated based on the the first 5.
+# Verify the first 5 by checking the rest 4 numbers are the same as expectation.
+# Also 
 
 class MNS:
 	checklist = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8)]
@@ -34,11 +42,12 @@ class MNS:
 				magic.remove(self.numbers[i])
 			else:
 				return
+		# hash the 5 numbers into one single number for faster deduplication
 		mv = 0
 		for i in range(0,5):
 			mv += (10*mv + self.perm[i])
 		if not mv in self.perms:
-			self.perms.append(mv)
+			self.perms.insert(mv)
 
 	def backtrack(self, idx):
 		for i in range(0,9):
@@ -56,7 +65,7 @@ class MNS:
 		self.numbers = numbers
 		self.perm = [0]*5
 		self.flag = [False]*9
-		self.perms = []
+		self.perms = set()
 		self.backtrack(0)
 		return len(self.perms)
 
