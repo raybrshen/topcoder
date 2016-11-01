@@ -1,7 +1,17 @@
 __author__ = 'ray'
 # problem url: https://community.topcoder.com/stat?c=problem_statement&pm=3942
 
-from fractions import Fraction as ft
+# Produce a special mixture with some elements with lowest cost.
+# Given that the elements can be obtain from several available mixtures.
+# Each available mixture have a price and they contains different amount of elements.
+
+# This is a very typical linear optimization problem.
+# The algorithm is based on Simplex tableau with O(n+m) time complexity and O(n*(n+m)) space complexity.
+# While n denotes the number of number of variables to optimize and m denotes the number of constraints.
+# Since the contraints are all equality, artificial variable is added for each constraints, and make a two step problem.
+# The first step is to minize the sum of all artificial variables.
+# The original problem has a solution only if the optimized result in the first step is 0.
+# The second step is then to minimize the total cost without considering artificial variables.
 
 # simplex tableau
 # b.v. | x1 x2 x3 x4 a1 a2 a3 | RHS
@@ -12,6 +22,8 @@ from fractions import Fraction as ft
 # ----------------------------------
 # -W   |                      |
 # -P   |                      |
+
+from fractions import Fraction as ft
 
 class Mixture:
 	def __init__(self):
