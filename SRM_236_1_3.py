@@ -1,6 +1,20 @@
 __author__ = 'ray'
 # problem url: https://community.topcoder.com/stat?c=problem_statement&pm=3530
 
+# In a parking lot there are a lot of cars and parking spots and all cars want to drive to a parking spot.
+# Return the minimal amount of time it takes before every car can have a parking spot.
+# All cars start on an empty spot. Cars are small and any number of them can drive on the same square simultaneously.
+# They can drive over empty spots and parking spots, but not through walls. Each car has to end on a separate parking spot.
+
+# This is a typical minimum cost perfect matching bipartite problem.
+# Let cars and parking lots being the two sides of bipartite, and the distance between a car and a lot be the cost.
+# The solution is to first run dijkstra algorithm to construct a bipartite graph with cost, meanwhile get the min and max distance.
+# The augmented-path algorithm can be used to find a perfect matching in a graph.
+# Since we know the min/max distance between a single car and lot, the final solution for all cars and lots will be in the open interval of [min_dis,max_dis].
+# Thus, we can apply the binary search method, given a limit (represent the solution cost) in each iteration, remove path with cost higher than the limit.
+# Check if there exist a perfect mathching under this limit, if yes proceed with lower limit, otherwise proceed with higher limit, until we hit the boundary.
+# The limit when we break out from the binary search loop, is the optimal solution cost.
+
 import sys
 from collections import deque
 
@@ -24,6 +38,7 @@ class Parking:
 		self.tree = [] # tree of current augmentation
 		self.lot_t = [] # flag if a lot is in tree
 
+	# collect positions of all cars and all lots.
 	def pre_processing(self, park):
 		self.park = park
 		self.r = len(park)
@@ -36,9 +51,12 @@ class Parking:
 				if park[i][j]=='P':
 					self.nl += 1
 					self.lot.append((i,j))
+		# the graph is a bipartite between each car-lot pair.
+		# with positive value representing distance, and -1 representing no available path.
 		self.graph = [ [-1]*self.nl for _ in range(self.nc) ]
 
 
+	# populate values for the graph
 	def dijkstra(self):
 		for c in range(0,self.nc):
 			dq = deque([(self.car[c][0],self.car[c][1],0)])
@@ -63,22 +81,7 @@ class Parking:
 					dq.append((nx,ny,nd))
 				if n_l==self.nl: break
 
-	# def dfs(self, c):
-	# 	if c==self.nc:
-	# 		return True
-	# 	for l in range(0,self.nl):
-	# 		dis = self.graph[c][l]
-	# 		if not self.visited[l] and dis!=-1 and dis<=self.limit:
-	# 			self.visited[l] = True
-	# 			if self.dfs(c+1): return True
-	# 			self.visited[l] = False
-	# 	return False
-  #
-	# def match(self, limit):
-	# 	self.limit = limit
-	# 	self.visited = [False]*self.nl
-	# 	return self.dfs(0)
-
+	# return true if there is a perfect matching in the graph.
 	def match(self):
 		self.mat_c = [-1]*self.nc # matched lot of a car
 		self.mat_l = [-1]*self.nl # matched car of a lot
@@ -112,6 +115,7 @@ class Parking:
 		if num_mat==self.nc: return True
 		else: return False
 
+	# find an augmented path in the graph
 	def find_aug(self, c):
 		# loop all lots
 		for l in range(0,self.nl):
@@ -135,7 +139,8 @@ class Parking:
 					self.tree.pop()
 		# return false if no augmenting path found
 		return False
-
+	
+	# algorithm entry
 	def minTime(self, park):
 		self.pre_processing(park)
 		if self.nc > self.nl:
@@ -143,8 +148,10 @@ class Parking:
 		if self.nc == 0:
 			return 0
 		self.dijkstra()
+		# corner check to see if there is a solution at all
 		self.limit = self.max_dis
 		if not self.match(): return -1
+		# binary search for a minimum cost bipartite perfect matching
 		l,r = self.min_dis-1, self.max_dis
 		while r-l>1:
 			self.limit = (l+r)/2
