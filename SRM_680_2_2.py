@@ -8,7 +8,7 @@ __author__ = 'ray'
 # When seating a guest, always assigns them the smallest available chair number.
 # Return an array with N elements: for each guest, in the order in which they arrived, the number of the chair where they will be seated.
 
-# A general fact being observed is that seats are all available at the begining, and turn into unavailable when new near comes.
+# A general fact being observed is that seats are all available at the begining, and turn into unavailable when new bear comes.
 # We can flag unavailable seats with a list of intervals. E,g, [(1,3),(6,8)] means seat 1,2,3,6,7,8 are unavailable.
 # For each new guest coming with an at_least request, binary search to get the interval it is in or right on its left.
 # Update the intervals list after each chair assignment, the search time for each bear is log(n), thus n*log(n) for all bears.
